@@ -30,7 +30,7 @@ int main(void) {
 
     RGFW_event event;
     while (RGFW_window_shouldClose(win) == RGFW_FALSE) {
-        while (RGFW_window_checkEvent(win, &event) && event.type != RGFW_quit);
+		RGFW_pollEvents();
 
         glViewport(0, 0, win->w, win->h);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
