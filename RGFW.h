@@ -8689,7 +8689,6 @@ static void RGFW_wl_relative_pointer_motion(void *data, struct zwp_relative_poin
 	float vecX =  (float)wl_fixed_to_double(dx);
 	float vecY = (float)wl_fixed_to_double(dy);
 	RGFW_rawMotionCallback(win, vecX, vecY);
-	RGFW_mousePosCallback(win, win->internal.lastMouseX, win->internal.lastMouseY);
 }
 
 static void RGFW_wl_pointer_locked(void *data, struct zwp_locked_pointer_v1 *zwp_locked_pointer_v1) {
@@ -8735,7 +8734,6 @@ static void RGFW_wl_pointer_leave(void* data, struct wl_pointer *pointer, u32 se
 
 static void RGFW_wl_pointer_motion(void* data, struct wl_pointer *pointer, u32 time, wl_fixed_t x, wl_fixed_t y) {
 	RGFW_UNUSED(pointer); RGFW_UNUSED(time);
-
 	RGFW_info* RGFW = (RGFW_info*)data;
 	RGFW_ASSERT(RGFW->mouseOwner != NULL);
 
@@ -8744,7 +8742,7 @@ static void RGFW_wl_pointer_motion(void* data, struct wl_pointer *pointer, u32 t
 	i32 convertedX = (i32)wl_fixed_to_double(x);
 	i32 convertedY = (i32)wl_fixed_to_double(y);
 
-	RGFW_rawMotionCallback(win, convertedX, convertedY);
+	RGFW_mousePosCallback(win, convertedX, convertedY);
 }
 
 static void RGFW_wl_pointer_button(void* data, struct wl_pointer *pointer, u32 serial, u32 time, u32 button, u32 state) {
@@ -14688,7 +14686,7 @@ EM_BOOL Emscripten_on_touchstart(int eventType, const EmscriptenTouchEvent* E, v
     size_t i;
     for (i = 0; i < (size_t)E->numTouches; i++) {
         RGFW_mousePosCallback(_RGFW->root, E->touches[i].targetX, E->touches[i].targetY);
-		RGFW_rawMotionCallback(0, 0);
+		RGFW_rawMotionCallback(_RGFW->root, 0, 0);
 	    RGFW_mouseButtonCallback(_RGFW->root, RGFW_mouseLeft, 1);
     }
 
@@ -14703,7 +14701,7 @@ EM_BOOL Emscripten_on_touchmove(int eventType, const EmscriptenTouchEvent* E, vo
     size_t i;
     for (i = 0; i < (size_t)E->numTouches; i++) {
         RGFW_mousePosCallback(_RGFW->root, E->touches[i].targetX, E->touches[i].targetY);
-		RGFW_rawMotionCallback(0, 0);
+		RGFW_rawMotionCallback(_RGFW->root, 0, 0);
     }
     return EM_TRUE;
 }
@@ -14716,7 +14714,7 @@ EM_BOOL Emscripten_on_touchend(int eventType, const EmscriptenTouchEvent* E, voi
     size_t i;
     for (i = 0; i < (size_t)E->numTouches; i++) {
 		RGFW_mousePosCallback(_RGFW->root, E->touches[i].targetX, E->touches[i].targetY);
-		RGFW_rawMotionCallback(0, 0);
+		RGFW_rawMotionCallback(_RGFW->root, 0, 0);
 		RGFW_mouseButtonCallback(_RGFW->root, RGFW_mouseLeft, 0);
     }
 	return EM_TRUE;
