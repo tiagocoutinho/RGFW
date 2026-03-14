@@ -60,6 +60,9 @@ int main(void) {
                 break;
 
             switch (event.type) {
+				case RGFW_mousePosChanged:
+					printf("%i %i\n", event.mouse.x, event.mouse.y);
+					break;
 				case RGFW_mouseRawMotion: {
                     int dev_x = event.delta.x;
                     int dev_y = event.delta.y;
