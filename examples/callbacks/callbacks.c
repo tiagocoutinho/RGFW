@@ -158,7 +158,7 @@ void mousebuttonfunc(const RGFW_event* e) {
 static
 void scrollfunc(const RGFW_event* e) {
     if (e->common.win != window) return;
-	printf("mouse scrolled %f %f\n", (double)e->scroll.x, (double)e->scroll.y);
+	printf("mouse scrolled %f %f\n", (double)e->delta.x, (double)e->delta.y);
 }
 
 static

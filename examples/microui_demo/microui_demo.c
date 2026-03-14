@@ -287,7 +287,7 @@ int main(int argc, char **argv) {
         case RGFW_mousePosChanged: mu_input_mousemove(ctx, event.mouse.x,  event.mouse.y); break;
 
 		case RGFW_mouseScroll:
-			mu_input_scroll(ctx, event.scroll.x, event.scroll.y);
+			mu_input_scroll(ctx, event.delta.x, event.delta.y);
 			break;
         case RGFW_mouseButtonPressed: {
 		  i32 x, y;
