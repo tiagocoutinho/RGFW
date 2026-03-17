@@ -57,7 +57,7 @@ You must explicitly request these helper functions via, `#define RGFW_OPENGL`, `
 
 void keyfunc(RGFW_window* win, RGFW_key key, RGFW_keymod keyMod, RGFW_bool repeat, RGFW_bool pressed) {
     RGFW_UNUSED(repeat);
-    if (key == RGFW_escape && pressed) {
+    if (key == RGFW_keyEscape && pressed) {
         RGFW_window_setShouldClose(win, 1);
     }
 }
@@ -72,7 +72,7 @@ int main() {
         RGFW_event event;
         while (RGFW_window_checkEvent(win, &event)) {  // or RGFW_pollEvents(); if you only want callbacks
             // you can either check the current event yourself
-            if (event.type == RGFW_quit) break;
+            if (event.type == RGFW_windowClose) break;
 
             i32 mouseX, mouseY;
             RGFW_window_getMouse(win, &mouseX, &mouseY);

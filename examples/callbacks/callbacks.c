@@ -104,7 +104,7 @@ void mouseNotifyfunc(const RGFW_event* e) {
 
 static
 void mouseposfunc(const RGFW_event* e) {
-	if (e->common.win != window || RGFW_window_isKeyPressed(e->common.win, RGFW_controlL) == 0) return;
+	if (e->common.win != window || RGFW_window_isKeyPressed(e->common.win, RGFW_keyControlL) == 0) return;
 	printf("mouse moved %i %i\n", e->mouse.x, e->mouse.y);
 }
 
@@ -174,7 +174,7 @@ void monitorfunc(const RGFW_event* e) {
 
 int main(void) {
     window = RGFW_createWindow("RGFW Callbacks", 500, 500, 500, 500, RGFW_windowCenter | RGFW_windowAllowDND);
-    RGFW_window_setExitKey(window, RGFW_escape);
+    RGFW_window_setExitKey(window, RGFW_keyEscape);
 
     RGFW_setDebugCallback(errorfunc);
     RGFW_setEventCallback(RGFW_scaleUpdated, scaleUpdatedfunc);

@@ -21,7 +21,7 @@ RGFWDEF void glPerspective(float fovY, float aspect, float zNear, float zFar);
 
 int main(void) {
     RGFW_window* win = RGFW_createWindow("First person camera", 0, 0, 800, 450, RGFW_windowCenter | RGFW_windowNoResize | RGFW_windowFocusOnShow | RGFW_windowOpenGL | RGFW_windowHideMouse);
-    RGFW_window_setExitKey(win, RGFW_escape);
+    RGFW_window_setExitKey(win, RGFW_keyEscape);
 
 	RGFW_window_swapInterval_OpenGL(win, 1);
 
@@ -74,26 +74,26 @@ int main(void) {
                 }
                 case RGFW_keyPressed:
                     switch (event.key.value) {
-                        case RGFW_return:
+                        case RGFW_keyReturn:
                             RGFW_window_showMouse(win, 0);
                             RGFW_window_setRawMouseMode(win, RGFW_TRUE);
                             break;
 
-                        case RGFW_backSpace:
+                        case RGFW_keyBackSpace:
                             RGFW_window_showMouse(win, 1);
                             RGFW_window_setRawMouseMode(win, RGFW_FALSE);
                             break;
 
-                        case RGFW_left:
+                        case RGFW_keyLeft:
                             yaw -= 5;
                             break;
-                        case RGFW_right:
+                        case RGFW_keyRight:
                             yaw += 5;
                             break;
-                        case RGFW_up:
+                        case RGFW_keyUp:
                             pitch -= 5;
                             break;
-                        case RGFW_down:
+                        case RGFW_keyDown:
                             pitch += 5;
                             break;
 
@@ -108,21 +108,21 @@ int main(void) {
         if (event.type == RGFW_windowClose)
             break;
 
-        if (RGFW_isKeyDown(RGFW_w)) {
+        if (RGFW_isKeyDown(RGFW_keyW)) {
             camX += cos((yaw + 90) * DEG2RAD)/5.0;
             camZ -= sin((yaw + 90) * DEG2RAD)/5.0;
         }
-        if (RGFW_isKeyDown(RGFW_s)) {
+        if (RGFW_isKeyDown(RGFW_keyS)) {
             camX += cos((yaw + 270) * DEG2RAD)/5.0;
             camZ -= sin((yaw + 270) * DEG2RAD)/5.0;
         }
 
-        if (RGFW_isKeyDown(RGFW_a)) {
+        if (RGFW_isKeyDown(RGFW_keyA)) {
             camX += cos(yaw * DEG2RAD)/5.0;
             camZ -= sin(yaw * DEG2RAD)/5.0;
         }
 
-        if (RGFW_isKeyDown(RGFW_d)) {
+        if (RGFW_isKeyDown(RGFW_keyD)) {
             camX += cos((yaw + 180) * DEG2RAD)/5.0;
             camZ -= sin((yaw + 180) * DEG2RAD)/5.0;
         }

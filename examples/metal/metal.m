@@ -55,7 +55,7 @@ int main(void)
     }
 
     RGFW_window* window = RGFW_createWindow("RGFW Metal example", 0, 0, 640, 480, RGFW_windowCenter);
-    RGFW_window_setExitKey(window, RGFW_escape);
+    RGFW_window_setExitKey(window, RGFW_keyEscape);
 
     CAMetalLayer* layer = [CAMetalLayer layer];
     layer.device = device;

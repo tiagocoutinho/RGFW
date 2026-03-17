@@ -46,7 +46,7 @@ int main(void) {
   RGFW_window *win =
       RGFW_createWindow("Vulkan Example", 0, 0, 500, 500,
                         RGFW_windowAllowDND | RGFW_windowCenter);
-  RGFW_window_setExitKey(win, RGFW_escape);
+  RGFW_window_setExitKey(win, RGFW_keyEscape);
   RGFW_setEventCallback(RGFW_mousePosChanged, (RGFW_genericFunc)mousePosCallback);
 
   vulkanContext ctx;
@@ -60,38 +60,14 @@ int main(void) {
     else return 0;
   }
 
-  u8 running = 1;
-  while (running && !RGFW_window_isKeyPressed(win, RGFW_escape)) {
-    RGFW_event event;
-    while (RGFW_window_checkEvent(win, &event)) {
-		if (event.type == RGFW_windowClose) {
-			running = 0;
-			break;
-		}
+	u8 running = 1;
+	while (RGFW_window_shouldClose(win) == RGFW_FALSE) {
+		RGFW_pollEvents();
 
-		if (event.type == RGFW_windowResized) {
-			/* this is terrible don't really do it this way
-			 * I mean most of this example is probably terrible for Vulkan + C anyway
-			 * I don't know what I'm doing with Vulkan
-			 * */
-			if (vkinit_vulkan_info != NULL)
-				freeVulkan(&ctx);
-
-			int res = initVulkanDevice(win, &ctx);
-			if (res == 0) {
-				vkinit_vulkan_info = initVulkan(&ctx);
-
-				if (vkinit_vulkan_info != NULL)
-					createGraphicsPipeline(&ctx);
-				else return 0;
-			}
+		if (vkinit_vulkan_info != NULL) {
+			draw_frame(&ctx);
 		}
 	}
-
-    if (vkinit_vulkan_info != NULL) {
-      draw_frame(&ctx);
-    }
-  }
 
   if (vkinit_vulkan_info != NULL)
     freeVulkan(&ctx);

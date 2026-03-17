@@ -19,7 +19,7 @@ int main(void) {
 	RGFW_setClassName("RGFW Basic");
 
     RGFW_window* win = RGFW_createWindow("RGFW Example Window", 500, 500, 500, 500, RGFW_windowAllowDND | RGFW_windowCenter | RGFW_windowNoResize);
-    RGFW_window_setExitKey(win, RGFW_escape);
+    RGFW_window_setExitKey(win, RGFW_keyEscape);
 
     u8* buffer = (u8*)RGFW_ALLOC(500 * 500 * 4);
     RGFW_surface* surface = RGFW_createSurface(buffer, 500, 500, RGFW_formatBGRA8);

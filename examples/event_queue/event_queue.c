@@ -13,7 +13,7 @@
 int main(void) {
     RGFW_window* win = RGFW_createWindow("RGFW Events", 500, 500, 500, 500, RGFW_windowCenter | RGFW_windowAllowDND);
     RGFW_event event;
-    RGFW_window_setExitKey(win, RGFW_escape);
+    RGFW_window_setExitKey(win, RGFW_keyEscape);
 
     while (RGFW_window_shouldClose(win) == 0) {
         RGFW_waitForEvent(RGFW_eventWaitNext);
@@ -39,7 +39,7 @@ int main(void) {
                     printf("Mouse Button scroll %f %f\n", (double)event.delta.x, (double)event.delta.y);
                     break;
 				case RGFW_mousePosChanged:
-                    if (RGFW_window_isKeyPressed(win, RGFW_controlL))
+                    if (RGFW_window_isKeyPressed(win, RGFW_keyControlL))
                         printf("Mouse pos changed %i %i\n", event.mouse.x, event.mouse.y);
                     break;
                 case RGFW_windowMoved:

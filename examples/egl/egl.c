@@ -13,12 +13,6 @@
 #include <GL/gl.h>
 #endif
 
-void keyfunc(const RGFW_keyEvent* e) {
-    if (e->value == RGFW_escape) {
-        RGFW_window_setShouldClose(e->win, 1);
-    }
-}
-
 int main(void) {
     RGFW_glHints* hints = RGFW_getGlobalHints_OpenGL();
     hints->major = 1;
@@ -27,8 +21,7 @@ int main(void) {
 
 	RGFW_window* win = RGFW_createWindow("a window", 0, 0, 800, 600, RGFW_windowEGL | RGFW_windowCenter | RGFW_windowNoResize | RGFW_windowTransparent);
     RGFW_window_makeCurrentContext_EGL(win);
-    RGFW_setEventCallback(RGFW_keyPressed, (RGFW_genericFunc)keyfunc); // you can use callbacks like this if you want
-    RGFW_window_setExitKey(win, RGFW_escape);
+    RGFW_window_setExitKey(win, RGFW_keyEscape);
 
     while (RGFW_window_shouldClose(win) == RGFW_FALSE) {
         RGFW_pollEvents();
