@@ -13972,6 +13972,7 @@ RGFW_bool RGFW_window_setMouse(RGFW_window* win, RGFW_mouse* mouse) {
 	CGDisplayShowCursor(kCGDirectMainDisplay);
 	objc_msgSend_void((id)mouse, sel_registerName("set"));
 	win->src.mouse = mouse;
+	return RGFW_TRUE;
 }
 
 void RGFW_freeMouse(RGFW_mouse* mouse) {
@@ -15647,7 +15648,6 @@ RGFW_mouse* RGFW_createMouse(u8* data, i32 w, i32 h, RGFW_format format) { retur
 RGFW_mouse* RGFW_createMouseStandard(RGFW_mouseIcons icon) { return RGFW_api.loadMouseStandard(icon); }
 RGFW_bool RGFW_window_setMouse(RGFW_window* win, RGFW_mouse* mouse) { return RGFW_api.window_setMouse(win, mouse); }
 void RGFW_window_moveMouse(RGFW_window* win, i32 x, i32 y) { RGFW_api.window_moveMouse(win, x, y); }
-RGFW_bool RGFW_window_setMouseDefault(RGFW_window* win) { return RGFW_api.window_setMouseDefault(win); }
 void RGFW_window_hide(RGFW_window* win) { RGFW_api.window_hide(win); }
 void RGFW_window_show(RGFW_window* win) { RGFW_api.window_show(win); }
 void RGFW_window_flash(RGFW_window* win, RGFW_flashRequest request) { RGFW_api.window_flash(win, request); }
