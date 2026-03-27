@@ -9992,7 +9992,6 @@ RGFW_mouse* RGFW_FUNC(RGFW_createMouseStandard) (RGFW_mouseIcons mouse) {
 		return RGFW_FALSE;
 	struct wl_cursor_image* cursor_image = wlcursor->images[0];
 	struct wl_buffer* cursor_buffer = wl_cursor_image_get_buffer(cursor_image);
-	wl_pointer_set_cursor(_RGFW->wl_pointer, _RGFW->mouse_enter_serial, _RGFW->cursor_surface, (i32)cursor_image->hotspot_x, (i32)cursor_image->hotspot_y);
 
 	RGFW_surface* surface = RGFW_ALLOC(sizeof(RGFW_surface));
 	surface->native.wl_buffer = cursor_buffer;
@@ -15111,8 +15110,7 @@ RGFW_mouse* RGFW_createMouseStandard(RGFW_mouseIcons mouse) {
 		default:                     return NULL;
 	}
 
-	EM_ASM( { document.getElementById("canvas").style.cursor = UTF8ToString($0); }, cursorName);
-	return NULL;
+	return (RGFW_mouse*)cursorName;
 }
 
 /* NOTE: I don't know if this is possible */
@@ -15120,7 +15118,13 @@ void RGFW_window_moveMouse(RGFW_window* win, i32 x, i32 y) { RGFW_UNUSED(win); R
 /* this one might be possible but it looks iffy */
 RGFW_mouse* RGFW_createMouse(u8* data, i32 w, i32 h, RGFW_format format) { RGFW_UNUSED(data); RGFW_UNUSED(w); RGFW_UNUSED(h); RGFW_UNUSED(format); return NULL; }
 
-RGFW_bool RGFW_window_setMouse(RGFW_window* win, RGFW_mouse* mouse) { RGFW_UNUSED(win); RGFW_UNUSED(mouse); return RGFW_TRUE; }
+RGFW_bool RGFW_window_setMouse(RGFW_window* win, RGFW_mouse* mouse) {
+	RGFW_ASSERT(win != NULL);
+	RGFW_ASSERT(mouse != NULL);
+
+	EM_ASM( { document.getElementById("canvas").style.cursor = UTF8ToString($0); }, (char*)mouse);
+	return RGFW_TRUE;
+}
 void RGFW_freeMouse(RGFW_mouse* mouse) { RGFW_UNUSED(mouse); }
 
 void RGFW_window_showMouse(RGFW_window* win, RGFW_bool show) {
