@@ -10039,7 +10039,7 @@ RGFW_mouse* RGFW_FUNC(RGFW_createMouse)(u8* data, i32 w, i32 h, RGFW_format form
 
 	RGFW_copyImageData(surface->native.buffer, RGFW_MIN(w, surface->w), RGFW_MIN(h, surface->h), surface->native.format, surface->data, surface->format, NULL);
 
-	return (void*) surface;
+	return (RGFW_mouse*)surface;
 }
 
 RGFW_bool RGFW_FUNC(RGFW_window_setMousePlatform)(RGFW_window* win, RGFW_mouse* mouse) {
