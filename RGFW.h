@@ -9527,6 +9527,8 @@ void RGFW_FUNC(RGFW_window_blitSurface) (RGFW_window* win, RGFW_surface* surface
 	wl_surface_commit(win->src.surface);
 
 	wl_buffer_destroy(surface->native.wl_buffer);
+
+	surface->native.wl_buffer = NULL;
 }
 
 void RGFW_FUNC(RGFW_surface_freePtr) (RGFW_surface* surface) {
@@ -10030,24 +10032,24 @@ RGFW_mouse* RGFW_FUNC(RGFW_createMouseStandard) (RGFW_mouseIcon mouse) {
 }
 
 RGFW_mouse* RGFW_FUNC(RGFW_createMouse)(u8* data, i32 w, i32 h, RGFW_format format) {
-    RGFW_surface *mouse_surface = RGFW_createSurface(data, w, h, format);
-	if (mouse_surface == NULL) return NULL;
+    RGFW_surface* surface = RGFW_createSurface(data, w, h, format);
+	if (surface == NULL) return NULL;
 
-	RGFW_copyImageData(mouse_surface->native.buffer, RGFW_MIN(w, mouse_surface->w), RGFW_MIN(h, mouse_surface->h), mouse_surface->native.format, mouse_surface->data, mouse_surface->format, NULL);
+	surface->native.wl_buffer = wl_shm_pool_create_buffer(surface->native.pool, 0, surface->w, surface->h, (i32)surface->w * 4, WL_SHM_FORMAT_ARGB8888);
 
-	return (void*) mouse_surface;
+	RGFW_copyImageData(surface->native.buffer, RGFW_MIN(w, surface->w), RGFW_MIN(h, surface->h), surface->native.format, surface->data, surface->format, NULL);
+
+	return (void*) surface;
 }
 
 RGFW_bool RGFW_FUNC(RGFW_window_setMousePlatform)(RGFW_window* win, RGFW_mouse* mouse) {
 	RGFW_ASSERT(win); RGFW_ASSERT(mouse);
-	RGFW_surface *mouse_surface = (RGFW_surface*)mouse;
+	RGFW_surface* surface = (RGFW_surface*)mouse;
 
 	win->src.using_custom_cursor = RGFW_TRUE;
 
-	struct wl_buffer *mouse_buffer = mouse_surface->native.wl_buffer;
-
-	wl_surface_attach(win->src.custom_cursor_surface, mouse_buffer, 0, 0);
-	wl_surface_damage(win->src.custom_cursor_surface, 0, 0, mouse_surface->w, mouse_surface->h);
+	wl_surface_attach(win->src.custom_cursor_surface, surface->native.wl_buffer, 0, 0);
+	wl_surface_damage(win->src.custom_cursor_surface, 0, 0, surface->w, surface->h);
 	wl_surface_commit(win->src.custom_cursor_surface);
 
 	return RGFW_TRUE;
@@ -10055,7 +10057,13 @@ RGFW_bool RGFW_FUNC(RGFW_window_setMousePlatform)(RGFW_window* win, RGFW_mouse* 
 
 void RGFW_FUNC(RGFW_freeMouse)(RGFW_mouse* mouse) {
 	if (mouse != NULL) {
-		RGFW_surface_free((RGFW_surface*)mouse);
+		RGFW_surface* surface = (RGFW_surface*)mouse;
+
+		if (surface->native.buffer && surface->native.wl_buffer) {
+			wl_buffer_destroy(surface->native.wl_buffer);
+		}
+
+		RGFW_surface_free(surface);
 	}
 }
 
