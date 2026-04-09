@@ -112,9 +112,7 @@ static
 void dropfunc(const RGFW_event* e) {
     if (e->common.win != window) return;
 
-    u32 i;
-    for (i = 0; i < e->drop.count; i++)
-        printf("dropped : %s\n", e->drop.value[i]);
+    printf("dropped : %s\n", e->drop.value);
 }
 
 static

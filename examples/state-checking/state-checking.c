@@ -29,7 +29,7 @@ typedef struct {
     RGFW_bool drop;
     RGFW_bool drag;
     i32 dragX, dragY;
-    const char** data;
+    const char* data;
     size_t count;
 } WindowState;
 
@@ -144,8 +144,9 @@ int main(void) {
         if (currState.drop != prevState.drop) {
             if (currState.drop) {
                 printf("Data dropped :\n");
-                for (size_t i = 0; i < currState.count; i++) {
-                    printf("    file : %s\n", currState.data[i]);
+                //for (size_t i = 0; i < currState.count; i++)
+				{
+                    printf("    file : %s\n", currState.data);
                 }
             } else printf("No data has ben dropped\n");
         }
