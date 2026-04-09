@@ -793,7 +793,7 @@ typedef struct RGFW_keyCharEvent {
 typedef struct RGFW_dataDropEvent {
 	RGFW_eventType type; /*!< which event has been sent?*/
 	RGFW_window* win; /*!< the window this event applies to (for event queue events) */
-	char* value; /*!< dropped data */
+	const char* value; /*!< dropped data */
 	size_t size; /*!< the size of the data in bytes */
 	RGFW_dataTransferType dataType; /*!< the type of data being dropped */
 } RGFW_dataDropEvent;
@@ -3235,7 +3235,7 @@ RGFWDEF void RGFW_rawMotionCallback(RGFW_window* win, float x, float y);
 RGFWDEF void RGFW_windowRefreshCallback(RGFW_window* win, i32 x, i32 y, i32 w, i32 h);
 RGFWDEF void RGFW_windowFocusCallback(RGFW_window* win, RGFW_bool inFocus);
 RGFWDEF void RGFW_mouseNotifyCallback(RGFW_window* win, i32 x, i32 y, RGFW_bool status);
-RGFWDEF void RGFW_dataDropCallback(RGFW_window* win, char* data, size_t count, RGFW_dataTransferType dataType);
+RGFWDEF void RGFW_dataDropCallback(RGFW_window* win, const char* data, size_t count, RGFW_dataTransferType dataType);
 RGFWDEF void RGFW_dataDragCallback(RGFW_window* win, RGFW_dataTransferType dataType, RGFW_dndActionType action, i32 x, i32 y);
 RGFWDEF void RGFW_keyCharCallback(RGFW_window* win, u32 codepoint);
 RGFWDEF void RGFW_keyCallback(RGFW_window* win, RGFW_key key, RGFW_keymod mod, RGFW_bool repeat, RGFW_bool press);
@@ -3598,7 +3598,7 @@ void RGFW_mouseNotifyCallback(RGFW_window* win, i32 x, i32 y, RGFW_bool status) 
 	RGFW_eventQueuePushAndCall(&event);
 }
 
-void RGFW_dataDropCallback(RGFW_window* win, char* data, size_t size, RGFW_dataTransferType dataType) {
+void RGFW_dataDropCallback(RGFW_window* win, const char* data, size_t size, RGFW_dataTransferType dataType) {
 	if (!(win->internal.enabledEvents & RGFW_dataDropFlag) || !(win->internal.flags & RGFW_windowAllowDND))
 		return;
 
@@ -5990,7 +5990,7 @@ void RGFW_unix_parseURI(RGFW_window* win, char* data) {
 		}
 
 		path[len] = '\0';
-		RGFW_dataDropCallback(win, path, len + 1, RGFW_dataFile);
+		RGFW_dataDropCallback(win, (const char*)path, len + 1, RGFW_dataFile);
 		RGFW_FREE(path);
 	}
 }
