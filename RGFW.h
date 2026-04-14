@@ -4184,7 +4184,7 @@ RGFW_bool RGFW_window_getDataDrag(RGFW_window* win, i32* x, i32* y) {
 	return RGFW_TRUE;
 }
 RGFW_dataDropNode* RGFW_window_getDataDrop(RGFW_window* win) {
-	if (_RGFW->windowState.win != win || _RGFW->windowState.dataDrop == RGFW_FALSE) return RGFW_FALSE;
+	if (_RGFW->windowState.win != win || _RGFW->windowState.dataDrop == RGFW_FALSE) return NULL;
 	return _RGFW->dndRoot;
 }
 
