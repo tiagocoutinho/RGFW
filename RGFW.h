@@ -175,11 +175,6 @@ int main() {
     #endif
 #endif
 
-#ifndef _POSIX_C_SOURCE
-	#define _POSIX_C_SOURCE 199309L
-	#include <time.h>
-#endif
-
 #if defined(RGFW_EGL) && !defined(RGFW_OPENGL)
 	#define RGFW_OPENGL
 #endif
