@@ -36,7 +36,9 @@ int main(void) {
     RGFW_window* win = RGFW_createWindow("RGFW State Checking", 500, 500, 500, 500, RGFW_windowCenter | RGFW_windowAllowDND);
     RGFW_window_setExitKey(win, RGFW_keyEscape);
 
-    WindowState prevState;
+	RGFW_setBuildDND(RGFW_TRUE);
+
+	WindowState prevState;
     memset(&prevState, 0, sizeof(WindowState));
 
     while (RGFW_window_shouldClose(win) == 0) {
@@ -146,7 +148,7 @@ int main(void) {
                 for (RGFW_dataDropNode* node = currState.dataDrop; node; node = node->next) {
                     printf("    file : %s\n", node->data);
                 }
-            } else printf("No data has ben dropped\n");
+            } else printf("No data has been dropped\n");
         }
 
         memcpy(&prevState, &currState, sizeof(WindowState));
