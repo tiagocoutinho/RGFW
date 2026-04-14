@@ -12893,15 +12893,21 @@ static bool RGFW__osxAcceptsFirstResponder(void) { return true; }
 static bool RGFW__osxPerformKeyEquivalent(id event) { RGFW_UNUSED(event); return true; }
 
 static NSDragOperation RGFW__osxDraggingEntered(id self, SEL sel, id sender) {
-	RGFW_UNUSED(sender); RGFW_UNUSED(self); RGFW_UNUSED(sel);
+	RGFW_UNUSED(sel);
 
+	RGFW_window* win = NULL;
+	object_getInstanceVariable(self, "RGFW_window", (void**)&win);
+	if (win == NULL)
+		return 0;
+
+	NSPoint p = ((NSPoint(*)(id, SEL)) objc_msgSend)(sender, sel_registerName("draggingLocation"));
+	RGFW_dataDragCallback(win, RGFW_dataFile, RGFW_dndActionEnter, (i32) p.x, (i32) (win->h - p.y));
 	return NSDragOperationCopy;
 }
 static NSDragOperation RGFW__osxDraggingUpdated(id self, SEL sel, id sender) {
 	RGFW_UNUSED(sel);
 
 	RGFW_window* win = NULL;
-
 	object_getInstanceVariable(self, "RGFW_window", (void**)&win);
 	if (win == NULL)
 		return 0;
@@ -12924,12 +12930,22 @@ static bool RGFW__osxPrepareForDragOperation(id self) {
 	return true;
 }
 
-void RGFW__osxDraggingEnded(id self, SEL sel, id sender);
-void RGFW__osxDraggingEnded(id self, SEL sel, id sender) { RGFW_UNUSED(sender); RGFW_UNUSED(self); RGFW_UNUSED(sel);  return; }
+static void RGFW__osxDraggingEnded(id self, SEL sel, id sender) {
+	RGFW_UNUSED(sel);
+
+	RGFW_window* win = NULL;
+	object_getInstanceVariable(self, "RGFW_window", (void**)&win);
+	if (win == NULL)
+		return;
+	if (!(win->internal.enabledEvents & RGFW_dataDragFlag)) return;
+
+	NSPoint p = ((NSPoint(*)(id, SEL)) objc_msgSend)(sender, sel_registerName("draggingLocation"));
+	RGFW_dataDragCallback(win, RGFW_dataFile, RGFW_dndActionExit, (i32) p.x, (i32) (win->h - p.y));
+	return;
+}
 
 static bool RGFW__osxPerformDragOperation(id self, SEL sel, id sender) {
 	RGFW_UNUSED(sender); RGFW_UNUSED(self); RGFW_UNUSED(sel);
-
 	RGFW_window* win = NULL;
 	object_getInstanceVariable(self, "RGFW_window", (void**)&win);
 	if (win == NULL || (!(win->internal.enabledEvents & RGFW_dataDropFlag)))
