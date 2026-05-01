@@ -8033,9 +8033,9 @@ size_t RGFW_FUNC(RGFW_monitor_getGammaRampPtr) (RGFW_monitor* monitor, RGFW_gamm
 
 	XRRFreeGamma(gamma);
 	return size;
-#endif
-
+#else
 	return 0;
+#endif
 }
 
 RGFW_bool RGFW_FUNC(RGFW_monitor_setGammaRamp) (RGFW_monitor* monitor, RGFW_gammaRamp* ramp) {
@@ -8058,8 +8058,9 @@ RGFW_bool RGFW_FUNC(RGFW_monitor_setGammaRamp) (RGFW_monitor* monitor, RGFW_gamm
 	XRRFreeGamma(gamma);
 
 	return RGFW_TRUE;
-#endif
+#else
 	return RGFW_FALSE;
+#endif
 }
 
 RGFW_bool RGFW_FUNC(RGFW_monitor_setMode)(RGFW_monitor* mon, RGFW_monitorMode* mode) {
@@ -8115,8 +8116,9 @@ RGFW_bool RGFW_FUNC(RGFW_monitor_requestMode)(RGFW_monitor* mon, RGFW_monitorMod
 	XRRFreeCrtcInfo(ci);
     XRRFreeScreenResources(res);
 	return output;
-#endif
+#else
 	return RGFW_FALSE;
+#endif
 }
 
 RGFW_monitor* RGFW_FUNC(RGFW_window_getMonitor) (RGFW_window* win) {
